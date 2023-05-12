@@ -73,4 +73,31 @@
 
 
 {% block metadata_fields %}
+{%- set schema = h.scheming_get_dataset_schema(dataset_type) -%}
+  {% if schema.resource_show_extras %}
+
+
+
+{% import "macros/form.html" as form %}
+
+  <div data-module="custom-fields">
+
+
+    {% for extra in h.scheming_get_resource_extras(data) %}
+
+      {% set prefix = 'extras__%d__' % loop.index0 %}
+      {{ form.custom(
+        names=(prefix ~ 'key', prefix ~ 'value', prefix ~ 'deleted'),
+        id='field-extras-%d' % loop.index,
+        label=_('Custom Field'),
+        values=(extra.key, extra.value, extra.deleted),
+        error=errors[prefix ~ 'key'] or errors[prefix ~ 'value']
+      ) }}
+
+    {% endfor %}
+
+  </div>
+
+  {% endif %}
+  {{ data }}
 {% endblock %}

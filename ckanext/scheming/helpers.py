@@ -445,3 +445,19 @@ def scheming_flatten_subfield(subfield, data):
         for k in record:
             flat[prefix + k] = record[k]
     return flat
+
+@helper
+def scheming_get_resource_extras(data):
+
+    exclude = ['id', 'name', 'url', 'url_type', 'description','format', 'size', 'state', 'position',
+               'package_id', 'last_modified', 'metadata_modified', 'created',
+               'mimetype','mimetype_inner',
+               'cache_last_updated', 'cache_url','datastore_active']
+    extras = []
+
+    for d in data:
+        if d not in exclude:
+            extras.append({'key':d, 'value':data[d]})
+
+
+    return extras
